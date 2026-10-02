@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional, List
 from datetime import datetime
 
@@ -16,6 +16,12 @@ class UserResponse(BaseModel):
     name: str
     email: str
 
+class UserSummary(BaseModel):
+    id: int
+    name: str
+
+    model_config = ConfigDict(from_attributes=True)
+
 class CommentCreate(BaseModel):
     content: str
     user_id: int
@@ -25,6 +31,9 @@ class CommentResponse(BaseModel):
     content: str
     user_id: int
     created_at: datetime
+    user: Optional[UserSummary] = None
+
+    model_config = ConfigDict(from_attributes=True)
 
 class VideoResponse(BaseModel):
     id: int
@@ -35,3 +44,6 @@ class VideoResponse(BaseModel):
     views: int
     created_at: datetime
     user_id: int
+    user: Optional[UserSummary] = None
+
+    model_config = ConfigDict(from_attributes=True)

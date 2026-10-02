@@ -33,6 +33,7 @@ export default function Home() {
           <div className="featured-copy">
             <span className="eyebrow"><span className="live-dot" /> Recién llegado</span>
             <h1>{featuredVideo.title}</h1>
+            <p className="featured-channel">En el canal de <strong>{featuredVideo.user?.name || 'Canal'}</strong></p>
             <p>{featuredVideo.description || 'Descubre este video y sigue explorando lo que la comunidad comparte.'}</p>
             <Link className="watch-button" to={`/watch/${featuredVideo.id}`}><span>▶</span> Ver ahora</Link>
           </div>
@@ -62,6 +63,7 @@ export default function Home() {
                 </Link>
                 <div className="video-info">
                   <Link to={`/watch/${vid.id}`}><h3 className="video-title">{vid.title}</h3></Link>
+                  <p className="video-meta channel-name">{vid.user?.name || 'Canal'}</p>
                   <p className="video-meta">{vid.views} vistas <span>·</span> {new Date(vid.created_at).toLocaleDateString()}</p>
                 </div>
               </article>

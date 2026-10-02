@@ -1,6 +1,6 @@
 from typing import Optional, List
 from sqlmodel import SQLModel, Field, Relationship
-from datetime import datetime
+from datetime import datetime, timezone
 
 class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -18,7 +18,7 @@ class Video(SQLModel, table=True):
     video_url: str
     thumbnail_url: str
     views: int = Field(default=0)
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     
     user_id: int = Field(foreign_key="user.id")
     user: Optional[User] = Relationship(back_populates="videos")
@@ -27,7 +27,7 @@ class Video(SQLModel, table=True):
 class Comment(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     content: str
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     
     user_id: int = Field(foreign_key="user.id")
     video_id: int = Field(foreign_key="video.id")

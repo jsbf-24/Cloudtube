@@ -52,6 +52,7 @@ export default function Player() {
           <div>
             <span className="eyebrow">Ahora reproduciendo</span>
             <h1>{video.title}</h1>
+            <p className="channel-byline">Canal <strong>{video.user?.name || 'Canal'}</strong></p>
           </div>
           <span className="view-count">{video.views} vistas</span>
         </div>
@@ -74,7 +75,13 @@ export default function Player() {
         )}
         <ul className="comment-list">
           {comments.map((c) => (
-            <li key={c.id}><span className="comment-avatar">{c.content?.[0]?.toUpperCase() || 'C'}</span><p>{c.content}</p></li>
+            <li key={c.id}>
+              <span className="comment-avatar">{c.user?.name?.[0]?.toUpperCase() || 'U'}</span>
+              <div className="comment-body">
+                <strong>{c.user?.name || 'Usuario'}</strong>
+                <p>{c.content}</p>
+              </div>
+            </li>
           ))}
         </ul>
         {!comments.length && <p className="subtle-text">Todavía no hay comentarios.</p>}
@@ -86,7 +93,7 @@ export default function Player() {
         {recommended.map((rec) => (
           <Link className="recommendation" key={rec.id} to={`/watch/${rec.id}`}>
               <img src={rec.thumbnail_url} alt={rec.title} />
-              <div><h3>{rec.title}</h3><p>{rec.views} vistas</p></div>
+              <div><h3>{rec.title}</h3><p>{rec.user?.name || 'Canal'} · {rec.views} vistas</p></div>
             </Link>
         ))}
       </aside>
