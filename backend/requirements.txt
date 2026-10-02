@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+sqlmodel
+psycopg2-binary
+boto3
+python-dotenv
+bcrypt==3.2.2
+pyjwt
+python-multipart
