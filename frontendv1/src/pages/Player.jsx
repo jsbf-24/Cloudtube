@@ -52,39 +52,51 @@ export default function Player() {
           <div>
             <span className="eyebrow">Ahora reproduciendo</span>
             <h1>{video.title}</h1>
-            <p className="channel-byline">Canal <strong>{video.user?.name || 'Canal'}</strong></p>
+            
+            {/* Enlace al perfil del canal/usuario */}
+            <p className="channel-byline">
+              Canal{' '}
+              <Link to={`/user/${video.user_id}`} style={{ color: 'inherit', fontWeight: 'bold' }}>
+                {video.user?.name || 'Canal'}
+              </Link>
+            </p>
           </div>
           <span className="view-count">{video.views} vistas</span>
         </div>
         <p className="video-description">{video.description}</p>
 
         <section className="comments-section">
-        <h2>Comentarios <span>{comments.length}</span></h2>
-        {user && (
-          <form className="comment-form" onSubmit={handleAddComment}>
-            <input
-              className="form-input"
-              type="text"
-              placeholder="Escribe un comentario..."
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              required
-            />
-            <button className="primary-button" type="submit">Comentar</button>
-          </form>
-        )}
-        <ul className="comment-list">
-          {comments.map((c) => (
-            <li key={c.id}>
-              <span className="comment-avatar">{c.user?.name?.[0]?.toUpperCase() || 'U'}</span>
-              <div className="comment-body">
-                <strong>{c.user?.name || 'Usuario'}</strong>
-                <p>{c.content}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-        {!comments.length && <p className="subtle-text">Todavía no hay comentarios.</p>}
+          <h2>Comentarios <span>{comments.length}</span></h2>
+          {user && (
+            <form className="comment-form" onSubmit={handleAddComment}>
+              <input
+                className="form-input"
+                type="text"
+                placeholder="Escribe un comentario..."
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                required
+              />
+              <button className="primary-button" type="submit">Comentar</button>
+            </form>
+          )}
+          <ul className="comment-list">
+            {comments.map((c) => (
+              <li key={c.id}>
+                {/* Opcional: También se puede enlazar el autor del comentario */}
+                <Link to={`/user/${c.user_id}`} className="comment-avatar" style={{ textDecoration: 'none' }}>
+                  {c.user?.name?.[0]?.toUpperCase() || 'U'}
+                </Link>
+                <div className="comment-body">
+                  <Link to={`/user/${c.user_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <strong>{c.user?.name || 'Usuario'}</strong>
+                  </Link>
+                  <p>{c.content}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          {!comments.length && <p className="subtle-text">Todavía no hay comentarios.</p>}
         </section>
       </div>
 
@@ -92,9 +104,12 @@ export default function Player() {
         <h2>Sigue explorando</h2>
         {recommended.map((rec) => (
           <Link className="recommendation" key={rec.id} to={`/watch/${rec.id}`}>
-              <img src={rec.thumbnail_url} alt={rec.title} />
-              <div><h3>{rec.title}</h3><p>{rec.user?.name || 'Canal'} · {rec.views} vistas</p></div>
-            </Link>
+            <img src={rec.thumbnail_url} alt={rec.title} />
+            <div>
+              <h3>{rec.title}</h3>
+              <p>{rec.user?.name || 'Canal'} · {rec.views} vistas</p>
+            </div>
+          </Link>
         ))}
       </aside>
     </div>
